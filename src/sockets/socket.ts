@@ -11,10 +11,12 @@ export const conectarCliente = (cliente: Socket): void => {
   usuariosConectados.agregar(usuario)
 }
 
-export const desconectar = (cliente: Socket): void => {
+export const desconectar = (cliente: Socket, io: socketIO.Server): void => {
   cliente.on('disconnect', () => {
     usuariosConectados.borrarUsuario(cliente.id)
     console.log(`Cliente ${cliente.id} DESCONECTADO`)
+
+    io.emit('usuarios-activos', usuariosConectados.getLista())
   })
 }
 
@@ -29,10 +31,19 @@ export const mensaje = (cliente: Socket, io: socketIO.Server): void => {
 export const configurarUsuario = (cliente: Socket, io: socketIO.Server): void => {
   cliente.on('configurar-usuario', (payload: PayloadConfigurarUsuario, callback: Function) => {
     usuariosConectados.actualizarNombre(cliente.id, payload.nombre)
+
+    io.emit('usuarios-activos', usuariosConectados.getLista())
+
     // eslint-disable-next-line node/no-callback-literal
     callback({
       ok: true,
       mensaje: `Usuario ${payload.nombre}, configurado`
     })
+  })
+}
+
+export const obtenerUsuarios = (cliente: Socket, io: socketIO.Server): void => {
+  cliente.on('obtener-usuarios', () => {
+    io.to(cliente.id).emit('usuarios-activos', usuariosConectados.getLista())
   })
 }

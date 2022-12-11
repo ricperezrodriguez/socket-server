@@ -47,10 +47,12 @@ export default class Server {
       socket.conectarCliente(cliente)
       // configurar usuario
       socket.configurarUsuario(cliente, this.io)
+      // obtener usuarios
+      socket.obtenerUsuarios(cliente, this.io)
       // mensajes
       socket.mensaje(cliente, this.io)
       // desconectar
-      socket.desconectar(cliente)
+      socket.desconectar(cliente, this.io)
     })
   }
 

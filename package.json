@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently --kill-others \"tsc -w\" \"nodemon dist/\"",
+    "dev": "concurrently --kill-others \"tsc -w\" \"npx nodemon dist/\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ricardo Pérez",
